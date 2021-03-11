@@ -55,7 +55,7 @@ namespace AssemblyComparer.Console
 
             decompilationProcess.WaitForExit();
 
-            return GetMd5Hash(sb.ToString().Trim());
+            return GetMd5Hash(EraseVersionCopyrightEtc(sb.ToString().Trim()));
         }
 
         private Process RunDecompilationProcess(string sourcePath)
@@ -112,6 +112,11 @@ namespace AssemblyComparer.Console
             var result = md5.ComputeHash(Encoding.Default.GetBytes(il));
             var hashString = BitConverter.ToString(result);
             return hashString;
+        }
+
+        private static string EraseVersionCopyrightEtc(string input)
+        {
+            return Regex.Replace(input, @"\{[^\{\}]+?\.custom instance void \[mscorlib\]System\.Reflection\.AssemblyFileVersionAttribute[\w\W]+?\}", String.Empty);
         }
     }
 }

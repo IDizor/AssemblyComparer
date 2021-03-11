@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComparisonConverter.cs" />
     <Compile Include="DefaultHasher.cs" />
     <Compile Include="HasherFactory.cs" />
     <Compile Include="IHasher.cs" />

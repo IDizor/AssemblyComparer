@@ -5,17 +5,28 @@ namespace AssemblyComparer.Console
 {
     internal class HasherFactory
     {
-        public static IHasher CreateHasher(string sourcePath)
+        private static IlHasher _IlHasher = new IlHasher();
+        private static DefaultHasher _DefaultHasher = new DefaultHasher();
+
+        public static IHasher GetHasher(string sourcePath)
         {
             if (IsCliAssembly(sourcePath))
             {
-                return new IlHasher();
+                return _IlHasher;
             }
-            return new DefaultHasher();
+
+            return _DefaultHasher;
         }
 
         private static bool IsCliAssembly(string sourcePath)
         {
+            var ext = Path.GetExtension(sourcePath);
+            if (!".dll".Equals(ext, StringComparison.InvariantCultureIgnoreCase) &&
+                !".exe".Equals(ext, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
             var dataDictionaryRVA = new uint[16];
             var dataDictionarySize = new uint[16];
 
